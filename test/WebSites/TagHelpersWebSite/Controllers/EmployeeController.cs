@@ -12,24 +12,7 @@ namespace TagHelpersWebSite.Controllers
         // GET: Employee
         public IActionResult Index()
         {
-            return View(db.Employee.ToList());
-        }
-
-        // GET: Employee/Details/5
-        public IActionResult Details(System.Int32? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(404);
-            }
-
-            Employee employee = db.Employee.Single(m => m.EmployeeId == id);
-            if (employee == null)
-            {
-                return new HttpStatusCodeResult(404);
-            }
-
-            return View(employee);
+            return View(Enumerable.Empty<Employee>());
         }
 
         // GET: Employee/Create
@@ -42,24 +25,16 @@ namespace TagHelpersWebSite.Controllers
         [HttpPost]
         public IActionResult Create(Employee employee)
         {
-            if (ModelState.IsValid)
+            if(ModelState.IsValid)
             {
-                db.Employee.Add(employee);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                return View("Details", employee);
             }
-
             return View(employee);
         }
 
         // GET: Employee/Edit/5
-        public IActionResult Edit(System.Int32? id)
+        public IActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(404);
-            }
-
             Employee employee = db.Employee.Single(m => m.EmployeeId == id);
             if (employee == null)
             {
@@ -85,13 +60,8 @@ namespace TagHelpersWebSite.Controllers
 
         // GET: Employee/Delete/5
         [ActionName("Delete")]
-        public IActionResult Delete(System.Int32? id)
+        public IActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(404);
-            }
-
             Employee employee = db.Employee.Single(m => m.EmployeeId == id);
             if (employee == null)
             {
@@ -104,7 +74,7 @@ namespace TagHelpersWebSite.Controllers
         // POST: Employee/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(System.Int32 id)
+        public IActionResult DeleteConfirmed(int id)
         {
             Employee employee = db.Employee.Single(m => m.EmployeeId == id);
             db.Employee.Remove(employee);

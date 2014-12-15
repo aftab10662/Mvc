@@ -97,7 +97,7 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
         }
 
         [Theory]
-        [InlineData("Create", "Index")]
+        [InlineData("Create", "Details")]
         public async Task ViewsWithModelMetadataAttributes_CanHandleValidPost(string postAction, string redirectAction)
         {
             // Arrange
@@ -118,12 +118,11 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
             var postContent = new FormUrlEncodedContent(validPostValues);
 
             // Act
-            var postResponse = await client.PostAsync("http://localhost/Employee/" + postAction, postContent);
-            var response = await client.GetAsync("http://localhost/Employee/" + redirectAction);
+            var response = await client.PostAsync("http://localhost/Employee/" + postAction, postContent);
             var responseContent = await response.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(HttpStatusCode.Redirect, postResponse.StatusCode);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.Equal(expectedMediaType, response.Content.Headers.ContentType);
             Assert.Equal(expectedContent, responseContent);
         }
