@@ -77,12 +77,11 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
 
         [Theory]
         [InlineData("Create")]
-        public async Task ViewsWithModelMetadataAttributes_CanRender(string action)
+        public async Task ViewsWithModelMetadataAttributes_CanRenderForm(string action)
         {
             // Arrange
             var server = TestServer.Create(_provider, _app);
             var client = server.CreateClient();
-            var expectedMediaType = MediaTypeHeaderValue.Parse("text/html; charset=utf-8");
             var expectedContent = await _resourcesAssembly.ReadResourceAsStringAsync(
                 "compiler/resources/TagHelpersWebSite.Employee." + action + ".html");
 
@@ -92,18 +91,16 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
 
             // Assert
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal(expectedMediaType, response.Content.Headers.ContentType);
             Assert.Equal(expectedContent, responseContent);
         }
 
         [Theory]
         [InlineData("Create", "Details")]
-        public async Task ViewsWithModelMetadataAttributes_CanHandleValidPost(string postAction, string redirectAction)
+        public async Task ViewsWithModelMetadataAttributes_CanRenderPostedValue(string postAction, string redirectAction)
         {
             // Arrange
             var server = TestServer.Create(_provider, _app);
             var client = server.CreateClient();
-            var expectedMediaType = MediaTypeHeaderValue.Parse("text/html; charset=utf-8");
             var expectedContent = await _resourcesAssembly.ReadResourceAsStringAsync(
                 "compiler/resources/TagHelpersWebSite.Employee." + redirectAction + ".AfterCreate.html");
             var validPostValues = new List<KeyValuePair<string, string>>
@@ -123,18 +120,16 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
 
             // Assert
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal(expectedMediaType, response.Content.Headers.ContentType);
             Assert.Equal(expectedContent, responseContent);
         }
 
         [Theory]
         [InlineData("Create")]
-        public async Task ViewsWithModelMetadataAttributes_CanHandleInvalidPost(string action)
+        public async Task ViewsWithModelMetadataAttributes_CanHandleInvalidData(string action)
         {
             // Arrange
             var server = TestServer.Create(_provider, _app);
             var client = server.CreateClient();
-            var expectedMediaType = MediaTypeHeaderValue.Parse("text/html; charset=utf-8");
             var expectedContent = await _resourcesAssembly.ReadResourceAsStringAsync(
                 "compiler/resources/TagHelpersWebSite.Employee." + action + ".Invalid.html");
             var validPostValues = new List<KeyValuePair<string, string>>
@@ -154,7 +149,6 @@ namespace Microsoft.AspNet.Mvc.FunctionalTests
 
             // Assert
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal(expectedMediaType, response.Content.Headers.ContentType);
             Assert.Equal(expectedContent, responseContent);
         }
     }
